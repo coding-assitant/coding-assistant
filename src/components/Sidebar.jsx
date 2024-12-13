@@ -11,6 +11,12 @@ const Sidebar = ({ codeText }) => {
   const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false);
   const chatHistoryRef = useRef(null);
 
+  const openextensionPage = () => {
+    chrome.tabs.create({
+      url: chrome.runtime.getURL('extensionPage.html')  // 获取扩展内页面的 URL
+    });
+  };
+
   // useEffect(() => {
   //   setInput(codeText);
   // }, [codeText]);
@@ -77,14 +83,37 @@ const Sidebar = ({ codeText }) => {
     }
   };
 
+  
+
   return (
     <div id="custom-sidebar" className="sidebar-container">
-
+      {/* 右上角图标 */}
+      <div className="top-right-icon-container">
+        <button className="top-right-icon" onClick={openextensionPage}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="grey" /* 修改颜色为灰色 */
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <line x1="4" y1="6" x2="20" y2="6"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="18" x2="20" y2="18"></line>
+        </svg>
+        </button>
+      </div>
+  
+      {/* 聊天记录容器 */}
       <div className="chat-history" id="chat-history" ref={chatHistoryRef}>
         {messages.map((msg, idx) => (
           <div key={msg.id || idx} className={`chat-bubble ${msg.role}-bubble`}>
             {msg.role === 'model' ? (
-              <span dangerouslySetInnerHTML={{ __html: msg.content }} /> // 渲染 Markdown 内容
+              <span dangerouslySetInnerHTML={{ __html: msg.content }} />
             ) : (
               msg.content
             )}
@@ -93,7 +122,8 @@ const Sidebar = ({ codeText }) => {
           </div>
         ))}
       </div>
-
+  
+      {/* 输入框和发送按钮 */}
       <div className="chat-input-container">
         <textarea
           className="chat-input"
@@ -103,15 +133,16 @@ const Sidebar = ({ codeText }) => {
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
-              handleSendClick(); // 调用发送消息的函数
+              handleSendClick();
             }
           }}
         />
         <button className="send-button" onClick={handleSendClick}>
-          {isSending ? "中断" : "发送"}
+          {isSending ? '中断' : '发送'}
         </button>
       </div>
-      {}
+  
+      {/* 历史记录弹窗 */}
       <HistoryModal
         isVisible={isHistoryModalVisible}
         onClose={() => setIsHistoryModalVisible(false)}

@@ -56,6 +56,9 @@ module.exports = {
         { from: 'public/icons', to: 'icons' },  // 复制icons文件夹到dist/icons
         { from: 'public/manifest.json', to: 'manifest.json' },  // 复制manifest.json到dist目录
         { from: 'src/sidepanel/sidepanel.html', to: 'sidepanel.html' },  // 添加侧边栏HTML文件
+        { from: 'src/extensionPage/extensionPage.html', to: 'extensionPage.html' },
+        { from: 'src/extensionPage/extensionPage.js', to: 'extensionPage.js' },  
+        { from: 'src/extensionPage/extensionPage.css', to: 'extensionPage.css' },
       ],
     }),
     // 注入环境变量

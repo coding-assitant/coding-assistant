@@ -15,6 +15,50 @@
   transition: background-color 0.3s, color 0.3s;
 }
 
+
+
+/* 右上角图标容器 */
+.top-right-icon-container {
+  position: absolute; /* 固定在页面右上角 */
+  top: 15px; /* 距顶部15px */
+  right: 15px; /* 距右侧15px */
+  display: flex; /* 使用 flex 布局 */
+  gap: 6px; /* 图标之间的间距 */
+  align-items: center; /* 图标垂直居中 */
+  z-index: 1000; /* 确保图标位于最前 */
+}
+
+/* 通用图标样式 */
+.top-right-icon {
+  cursor: pointer; /* 鼠标悬停显示手型 */
+  background-color: white; /* 圆形背景白色 */
+  border: 1px solid #ccc; /* 边框浅灰色，细边更显精致 */
+  border-radius: 50%; /* 圆形图标 */
+  width: 32px; /* 图标按钮宽度 */
+  height: 32px; /* 图标按钮高度 */
+  display: flex; /* 使用 flex 居中 */
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* 添加柔和阴影 */
+  transition: all 0.2s ease-in-out; /* 平滑过渡效果 */
+}
+
+/* 图标 hover 效果 */
+.top-right-icon:hover {
+  background-color: #f9f9f9; /* 鼠标悬停时背景颜色变浅 */
+  border-color: #aaa; /* 边框颜色加深 */
+  transform: scale(1.1); /* 图标轻微放大 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 阴影加深 */
+}
+
+/* 图标中的 SVG 样式 */
+.top-right-icon svg {
+  width: 18px; /* 图标内部 SVG 宽度 */
+  height: 18px; /* 图标内部 SVG 高度 */
+  stroke: #555; /* 图标颜色为柔和的深灰色 */
+}
+
+
 /* 下拉菜单样式 */
 .dropdown-menu {
   position: absolute;
