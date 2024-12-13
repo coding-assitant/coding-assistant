@@ -53,11 +53,10 @@ function getStorageSync(key) {
 }
 
 export async function sendMessageToModel(messageContent, onUserMessage, onModelMessage, setIsSending, codetext='',isRetry = false, messageObject = null) {
+  isRetry = !!isRetry; // 确保 isRetry 为布尔值
   controller = new AbortController();
   const { signal } = controller;
   const timestamp = new Date().toLocaleTimeString();
-  console.log(getGlobalText());
-
   // 如果是新消息而不是重试，创建并存储消息对象
   if (!isRetry) {
     const userBubbleId = generateUserBubbleId();
@@ -65,11 +64,15 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
     onUserMessage({ role: 'user', content: messageContent, timestamp, loading: false, id: userBubbleId });
     saveHistory('user', messageContent);
     messageHistory.set(userBubbleId, messageObject);  // 将完整的消息对象存入 Map
+    globalState.latestMessageId = userBubbleId; // 更新最新消息 ID
     // console.log("新消息存储到 messageHistory:", userBubbleId, messageContent);
     globalState.retryBubbleId = null;
     globalState.latestMessageId = userBubbleId; // 更新最新消息 ID
   } else if (messageObject) {
     // console.log("重试消息使用的 userBubbleId:", messageObject.id);
+    if (!messageObject) {
+      return;
+    }
   }
 
   let modelBubbleId = null;
@@ -89,6 +92,13 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
   try {
     setIsSending(true);
 
+
+    console.log('发送请求参数:', {
+      inputs: { code: codetext },
+      query: messageObject.content,
+      response_mode: 'streaming',
+    });
+  
     await fetchSSE('http://dify.domain.com/v1/chat-messages', {
       method: 'POST',
       headers: {
@@ -167,44 +177,72 @@ export function cancelMessage() {
 }
 
 function bindButtonEvents(id, content, onModelMessage, setIsSending, messageObject) {
-  const copyButton = document.querySelector(`#button-container-${id} .copy-button`);
-  const retryButton = document.querySelector(`#button-container-${id} .retry-button`);
-  const favoriteButton = document.querySelector(`#button-container-${id} .favorite-button`);
+  // 延迟绑定事件，确保按钮容器和按钮都已生成
+  setTimeout(() => {
+    // 检查按钮容器是否存在
+    const container = document.querySelector(`#button-container-${id}`);
 
-  if (copyButton) {
-    copyButton.addEventListener('click', () => {
+    // 绑定通用按钮事件
+    const bindButton = (selector, callback, description) => {
+      const button = container.querySelector(selector);
+      if (button) {
+        button.addEventListener('click', callback);
+        console.log(`绑定${description}事件: ${selector}`);
+      } else {
+        console.warn(`${description}未找到: ${selector}`);
+      }
+    };
+
+    // 绑定复制按钮事件
+    bindButton('.copy-button', () => {
+      console.log('复制按钮被点击');
       fallbackCopyTextToClipboard(content);
-    });
-  }
+    }, '复制按钮');
 
-  if (retryButton) {
-    retryButton.addEventListener('click', () => {
-      // 检查消息是否为最新消息
-      if (messageObject.id !== globalState.latestMessageId) {
-        alert("暂不支持历史消息重新回复");
+    // 绑定重试按钮事件
+
+    bindButton('.retry-button', () => {
+      console.log('当前最新消息ID:', globalState.latestMessageId);
+      console.log('当前重试的消息ID:', messageObject?.id);
+
+      if (!messageObject) {
+        console.error('重试失败：messageObject 为空');
         return;
       }
 
-      // console.log("重试按钮点击，查找对应的用户输入内容，ID:", messageObject.id);
-      const originalMessageData = messageHistory.get(messageObject.id);
-      // console.log("重试按钮 - messageHistory:", Array.from(messageHistory.entries()));
-
-      if (originalMessageData) {
-        // console.log("找到对应的原始用户输入:", originalMessageData.content);
-        setIsSending(true);
-        sendMessageToModel(originalMessageData.content, null, onModelMessage, setIsSending, true, originalMessageData);
-      } else {
-        console.error("未找到原始用户输入，ID:", messageObject.id);
+      if (messageObject.id !== globalState.latestMessageId) {
+        alert('暂不支持历史消息重新回复');
+        return;
       }
-    });
-  }
 
-  if (favoriteButton) {
-    favoriteButton.addEventListener('click', () => {
+      const originalMessageData = messageHistory.get(messageObject.id);
+      if (!originalMessageData) {
+        console.error('重试失败：未找到原始用户输入');
+        return;
+      }
+
+      console.log('重试使用的消息数据:', originalMessageData);
+
+      // 修正参数传递
+      sendMessageToModel(
+        originalMessageData.content, // 用户消息内容
+        null, // 不触发用户消息渲染
+        onModelMessage, // 渲染模型响应的回调
+        setIsSending, // 控制发送状态的回调
+        '', // 代码内容
+        true, // 标记为重试
+        originalMessageData // 传递正确的消息对象
+      );
+    }, '重试按钮');
+
+
+    // 绑定收藏按钮事件
+    bindButton('.favorite-button', () => {
+      console.log('收藏按钮被点击');
       saveFavorite(content);
       alert('已收藏');
-    });
-  }
+    }, '收藏按钮');
+  }, 100); // 延迟 100ms 检查并绑定事件
 }
 
 function fallbackCopyTextToClipboard(text) {
