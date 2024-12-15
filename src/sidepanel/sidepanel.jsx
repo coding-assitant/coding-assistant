@@ -63,7 +63,7 @@ const SidePanel = () => {
           </button>
         </div>
         {/* 原有功能 */}
-        <Sidebar codeText={codeText} />
+        <Sidebar codeText={codeText} setCodeText={setCodeText} />
       </div>
     );
 };

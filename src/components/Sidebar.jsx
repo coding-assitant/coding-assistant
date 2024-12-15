@@ -4,7 +4,7 @@ import HistoryModal from './HistoryModal';
 import '../styles/sidebar.css';
 
 
-const Sidebar = ({ codeText }) => {
+const Sidebar = ({ codeText, setCodeText }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isSending, setIsSending] = useState(false); // 新增状态变量
@@ -73,6 +73,11 @@ const Sidebar = ({ codeText }) => {
       const messageContent = input;
       setInput(''); // 清空输入框
       setIsSending(true); // 设置为“发送中”状态
+      console.log("Sending message to model:", messageContent);
+      // if (codeText === undefined) {
+      //   codeText = "";
+      // }
+      console.log("Code text:", codeText);
       sendMessageToModel(messageContent, addMessage, addMessage, setIsSending, codeText); // 传递 setIsSending 以更新状态
     }
   };
@@ -99,21 +104,37 @@ const Sidebar = ({ codeText }) => {
   
       {/* 输入框和发送按钮 */}
       <div className="chat-input-container">
-        <textarea
-          className="chat-input"
-          placeholder="输入消息..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              handleSendClick();
-            }
-          }}
-        />
-        <button className="send-button" onClick={handleSendClick}>
-          {isSending ? '中断' : '发送'}
-        </button>
+        {/* 代码文本展示框 */}
+        {codeText && (
+          <div className="code-display-box">
+            <button
+              className="close-button"
+              onClick={() => setCodeText('')} // 点击按钮清空 codeText
+            >
+              ×
+            </button>
+            <p className="code-text">{codeText}</p>
+          </div>
+        )}
+
+        {/* 输入框和发送按钮并排排列 */}
+        <div style={{ display: 'flex', width: '100%' }}>
+          <textarea
+            className="chat-input"
+            placeholder="输入消息..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSendClick();
+              }
+            }}
+          />
+          <button className="send-button" onClick={handleSendClick}>
+            {isSending ? '中断' : '发送'}
+          </button>
+        </div>
       </div>
   
       {/* 历史记录弹窗 */}

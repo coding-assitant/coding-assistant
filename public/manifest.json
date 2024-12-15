@@ -12,9 +12,7 @@
     "sidePanel",
     "cookies"
   ],
-  "host_permissions": [
-    "http://ojo.bnu.edu.cn/*"
-  ],
+"host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background.bundle.js"
   },
@@ -27,7 +25,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://ojo.bnu.edu.cn/*"],
+      "matches": ["<all_urls>"],
       "js": [
         "libs/marked.min.js",
         "contentScript.bundle.js"
