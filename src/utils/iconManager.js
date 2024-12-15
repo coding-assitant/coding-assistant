@@ -16,6 +16,7 @@ export const showIcon = (x, y, text) => {
   container.style.left = `${x}px`;
   container.style.zIndex = 1000;
   container.style.display = 'flex';
+  
   container.style.alignItems = 'center';
   container.style.justifyContent = 'flex-start'; // 图标与功能键横向排列
   container.style.cursor = 'pointer';
@@ -89,6 +90,7 @@ export const showIcon = (x, y, text) => {
   actionsContainer.style.flexDirection = 'row';
   actionsContainer.style.alignItems = 'center';
   actionsContainer.style.marginLeft = '10px';
+  // actionsContainer.style.display = 'none';
 
   actions.forEach((action) => {
     const actionButton = document.createElement('button');
@@ -99,6 +101,7 @@ export const showIcon = (x, y, text) => {
     actionButton.style.cursor = 'pointer';
     actionButton.style.padding = '10px';
     actionButton.style.display = 'flex';
+    
     actionButton.style.alignItems = 'center';
     actionButton.style.justifyContent = 'center';
     actionButton.style.transition = 'background-color 0.3s ease';
@@ -121,7 +124,8 @@ export const showIcon = (x, y, text) => {
     container.style.backgroundColor = '#fff'; // 背景显示
     container.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)'; // 恢复阴影
     container.style.width = 'auto'; // 背景动态延伸
-    actionsContainer.style.display = 'flex';
+    // actionsContainer.style.display = 'flex';
+    actionsContainer.style.display = 'none';
   });
 
   container.addEventListener('mouseleave', () => {

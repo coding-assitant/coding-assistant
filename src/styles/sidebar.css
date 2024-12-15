@@ -116,6 +116,7 @@
 /* 聊天气泡样式 */
 .chat-bubble {
   padding: 20px;
+  padding-top: 15px; /* 增加顶部内边距，控制第一个气泡与顶部的距离 */
   margin-bottom: 15px;
   border-radius: 10px;
   max-width: 100%;
@@ -123,6 +124,10 @@
   animation: fadeIn 0.3s forwards;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   position: relative;  
+}
+
+.chat-history .chat-bubble:first-child {
+  margin-top: 40px; /* 仅第一个气泡与顶部的间距 */
 }
 
 @keyframes fadeIn {
