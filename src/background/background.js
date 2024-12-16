@@ -53,6 +53,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' && tab.url) {
     chrome.cookies.getAll({ url: tab.url }, (cookies) => {
+      console.log(tab.url)
       let username = null;
       for (const cookie of cookies) {  // Use for...of loop to iterate over the array
         if (cookie.name === 'HUSTOJ_user') {  // Correct way to access the 'name' property
@@ -67,6 +68,19 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         });
       } else {
         console.log('Username cookie not found.');
+      }
+
+      const regex = /https?:\/\/[a-zA-Z0-9.-]+\/showsource\.php\?id=\d+/;
+      if (regex.test(tab.url)) {
+        const urlObj = new URL(tab.url);
+        const id = urlObj.searchParams.get("id");
+
+        if (id) {
+          console.log("ID:", id);
+          chrome.storage.local.set({ id: id }, function() {
+            console.log('Data saved to local storage: ' + id);
+          });
+        }
       }
     });
   }

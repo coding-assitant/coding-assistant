@@ -1,7 +1,7 @@
 import fetchSSE from '../utils/fetchSSE';
-import { marked } from 'marked';
+import {marked} from 'marked';
 import {saveFavorite} from './favoriteService'
-import { saveHistory } from './historyService';
+import {saveHistory} from './historyService';
 
 const apiKey = process.env.API_KEY;
 let controller;
@@ -97,22 +97,24 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
       inputs: { code: codetext },
       query: messageObject.content,
       response_mode: 'streaming',
+      id: await getStorageSync('id')
     });
-  
-    await fetchSSE('http://dify.domain.com/v1/chat-messages', {
+
+    await fetchSSE('http://172.16.215.118:8888/v1/chat-messages', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer app-8fXyKoEq2Ka1XI3ZSs1FftaG`
-      },
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   'Authorization': `Bearer app-8fXyKoEq2Ka1XI3ZSs1FftaG`
+      // },
       body: JSON.stringify({
-        inputs: 
-        {
-          'code': codetext,
-        },
+        // inputs:
+        //     {
+        //       'code': codetext,
+        //     },
         query: messageObject.content,
-        response_mode: "streaming",
-        user: await getStorageSync('key'),
+        // response_mode: "streaming",
+        user_id: await getStorageSync('key'),
+        solution_id: await getStorageSync('id')
       }),
       signal,
       onMessage: (data) => {
@@ -225,13 +227,13 @@ function bindButtonEvents(id, content, onModelMessage, setIsSending, messageObje
 
       // 修正参数传递
       sendMessageToModel(
-        originalMessageData.content, // 用户消息内容
-        null, // 不触发用户消息渲染
-        onModelMessage, // 渲染模型响应的回调
-        setIsSending, // 控制发送状态的回调
-        '', // 代码内容
-        true, // 标记为重试
-        originalMessageData // 传递正确的消息对象
+          originalMessageData.content, // 用户消息内容
+          null, // 不触发用户消息渲染
+          onModelMessage, // 渲染模型响应的回调
+          setIsSending, // 控制发送状态的回调
+          '', // 代码内容
+          true, // 标记为重试
+          originalMessageData // 传递正确的消息对象
       );
     }, '重试按钮');
 
