@@ -3,9 +3,7 @@ export const showIcon = (x, y, text) => {
   if (existingIcon) {
     existingIcon.remove();
   }
-
-  console.log("text111: ", text);
-
+  console.log("deetected: ", text);
   // 创建图标与快捷功能栏的主容器
   const container = document.createElement('div');
   container.id = 'custom-selected-icon';

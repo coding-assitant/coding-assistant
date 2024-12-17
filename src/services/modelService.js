@@ -2,6 +2,45 @@ import fetchSSE from '../utils/fetchSSE';
 import { marked } from 'marked';
 import {saveFavorite} from './favoriteService'
 import { saveHistory } from './historyService';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github.css'; // 可根据需要选择其他主题样式
+
+// 配置 marked 的高亮函数
+marked.use({
+  renderer: {
+    code(code, infostring) {
+      try {
+        console.log("Processing code block...");
+        console.log("Raw code block content:", code);
+        console.log("Infostring (language):", infostring);
+
+        // 检查 code 是否为对象，并提取实际代码内容
+        if (typeof code === 'object' && code !== null) {
+          // console.warn("Code block content is an object. Extracting 'text' field.");
+          code = code.text || ''; // 使用 text
+        }
+
+        // 确保 code 是字符串
+        if (typeof code !== 'string') {
+          console.error("Code block content is not a string:", code);
+          code = String(code || ''); // 转为字符串，避免报错
+        }
+
+        const lang = (infostring || '').split(/\s+/)[0];
+        if (lang && hljs.getLanguage(lang)) {
+          const highlighted = hljs.highlight(code, { language: lang }).value;
+          return `<pre><code class="hljs language-${lang}">${highlighted}</code></pre>`;
+        } else {
+          const highlighted = hljs.highlightAuto(code).value;
+          return `<pre><code class="hljs">${highlighted}</code></pre>`;
+        }
+      } catch (err) {
+        console.error("Error processing code block:", err);
+        return `<pre><code>${code}</code></pre>`;
+      }
+    }
+  }
+});
 
 const apiKey = process.env.API_KEY;
 let controller;
