@@ -15,8 +15,6 @@
   transition: background-color 0.3s, color 0.3s;
 }
 
-
-
 /* 右上角图标容器 */
 .top-right-icon-container {
   position: absolute !important; /* 固定在页面右上角 */
@@ -111,6 +109,10 @@
   text-align: center;
   font-size: 1.2em;
   margin-bottom: 20px;
+}
+
+.chat-history .chat-bubble:first-child {
+  margin-top: 40px; /* 仅第一个气泡与顶部的间距 */
 }
 
 /* 聊天气泡样式 */

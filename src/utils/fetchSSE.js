@@ -1,5 +1,5 @@
 async function fetchSSE(resource, options) {
-  const { onMessage, ...fetchOptions } = options;
+  const { onMessage, onError, onMessageEnd, ...fetchOptions } = options;
 
   // ÄÚÁª createParser º¯Êý
   function createParser(onParse) {
@@ -15,11 +15,25 @@ async function fetchSSE(resource, options) {
           position = nextNewline + 1;
           console.log("Line matching :", line);
           if (line.startsWith('data:') && line.slice(5).trim().startsWith('{')) {
-            console.log(" NOT Line matching :", line);
-            onParse({ type: 'event', data: line.slice(5) });
+            const eventData = line.slice(5).trim();
+            try {
+              const parsedData = JSON.parse(eventData);
+              if (parsedData.event === 'message') {
+                console.log("处理 message 类型事件:", parsedData);
+                onParse({ event: 'message', data: line.slice(5) });
+              } else if (parsedData.event === 'error') {
+                console.error("处理 error 类型事件:", parsedData);
+                onError();  // 调用 onError 处理错误
+              } else if (parsedData.event === 'message_end') {
+                console.log("处理 message_end 类型事件:", parsedData);
+                onMessageEnd();  // 调用 onMessageEnd 处理消息结束
+              }
+            } catch (e) {
+              console.error("JSON 解析错误:", e);
+            }
           }else {
             // 未识别的行，记录警告日志
-            console.warn("Unrecognized line format:", line);
+            // console.warn("Unrecognized line format:", line);
           }
         }
         buffer = buffer.slice(position);
@@ -34,9 +48,9 @@ async function fetchSSE(resource, options) {
     throw new Error(`Error: ${response.status} - ${response.statusText}`);
   }
 
-  const parser = createParser((event) => {
-    if (event.type === 'event' && event.data !== '[DONE]') {
-      onMessage(event.data);
+  const parser = createParser((mes) => {
+    if (mes.event === 'message') {
+      onMessage(mes.data);
     }
   });
 

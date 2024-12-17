@@ -32,47 +32,7 @@ const App = () => {
       document.removeEventListener('contextmenu', contextMenuListener);
     };
   }, []);
-
-  // 交叉观察器：当代码块进入视野时显示图标
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const codeBlock = entry.target;
-
-            // 防止重复处理
-            if (codeBlock.dataset.processed) return;
-            codeBlock.dataset.processed = 'true';
-
-            const rect = codeBlock.getBoundingClientRect();
-            const x = window.scrollX + rect.right + 5;
-            const y = window.scrollY + rect.top + 100;
-            const text = codeBlock.textContent.trim();
-
-            chrome.storage.local.set({ codeText: text });
-            showIcon(x, y, text);
-            observer.unobserve(codeBlock); // 停止观察该代码块
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    // 选择页面中的代码块并观察
-    document.querySelectorAll('pre, code, .example_code').forEach((block) => {
-      if (!block.dataset.processed) {
-        observer.observe(block);
-      }
-    });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  return null; // 不需要渲染任何内容
-};
+}
 
 export default App;
 

@@ -1,9 +1,6 @@
 import fetchSSE from '../utils/fetchSSE';
 import {marked} from 'marked';
 import {saveFavorite} from './favoriteService'
-<<<<<<< HEAD
-import {saveHistory} from './historyService';
-=======
 import { saveHistory } from './historyService';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css'; // 可根据需要选择其他主题样式
@@ -44,7 +41,6 @@ marked.use({
     }
   }
 });
->>>>>>> 处理回复
 
 const apiKey = process.env.API_KEY;
 let controller;
@@ -188,7 +184,13 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
         } catch (err) {
           console.error("解析数据时出错：", err);
         }
-      }
+      },
+      onError: () => {
+        console.error("Error event received:", data);
+      },
+      onMessageEnd: () => {
+        console.log("Message end event received:", data);
+      },
     });
 
     if (modelBubbleId) {
