@@ -102,10 +102,10 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
 
     await fetchSSE('http://172.16.215.118:8888/v1/chat-messages', {
       method: 'POST',
-      // headers: {
-      //   'Content-Type': 'application/json',
+      headers: {
+        'Content-Type': 'application/json'
       //   'Authorization': `Bearer app-8fXyKoEq2Ka1XI3ZSs1FftaG`
-      // },
+      },
       body: JSON.stringify({
         // inputs:
         //     {
@@ -114,12 +114,15 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
         query: messageObject.content,
         // response_mode: "streaming",
         user_id: await getStorageSync('key'),
-        solution_id: await getStorageSync('id')
+        solution_id: 158709
       }),
       signal,
       onMessage: (data) => {
+        console.log("data : ", data);
         try {
+          //{"event": "message", "conversation_id": "71468e0b-b489-4e25-965e-bd86467bff04", "message_id": "d8792cc9-5b8b-4532-80b5-dedfc1200f00", "created_at": 1734343651, "task_id": "9040f0d7-f504-4b44-858f-5c904b882c1e", "id": "d8792cc9-5b8b-4532-80b5-dedfc1200f00", "answer": "include", "from_variable_selector": null}
           const parsedData = JSON.parse(data);
+          console.log(parsedData)
           const content = parsedData.answer || "";
           modelResponseContent += content;
 
