@@ -180,8 +180,8 @@
 }
 
 .user-bubble {
-  background-color: #007bff;
-  color: white;
+  background-color: #f5f5f5;
+  color: black;
   align-self: flex-end;  /* 气泡在父容器右侧 */
   text-align: left;  /* 文本左对齐 */
   margin-left: auto;  /* 确保气泡靠右 */
@@ -221,8 +221,6 @@
   text-decoration: underline; /* 鼠标悬停时下划线 */
 }
 
-
-
 .model-bubble blockquote {
   border-left: 5px solid #3f3f3f;
   padding-left: 15px;
@@ -261,8 +259,15 @@
   resize: none;   /* 禁止 textarea 的手动调整大小 */
 }
 
+.chat-input:focus {
+  outline: none; /* 去掉默认的聚焦边框 */
+  border: 2px solid #ccc; /* 设置聚焦时的深灰色边框 */
+  box-shadow: 0 0 5px rgba(74, 74, 74, 0.5); /* 可选：设置聚焦时的阴影效果 */
+}
+
+
 .send-button {
-  background-color: #007bff;
+  background-color: #3f3f3f;
   color: white;
   border: none;
   border-radius: 20px;
@@ -274,7 +279,7 @@
 }
 
 .send-button:hover {
-  background-color: #0056b3;
+  background-color: #020202;
 }
 
 /* 时间戳样式 */
@@ -288,7 +293,7 @@
 
 .user-bubble .timestamp {
   font-size: 0.75em;
-  color: #ffffff;
+  color: #777;
   position: absolute;
   bottom: 2px;  /*固定在气泡的底部*/
   right: 5px;  /* 靠右对齐 */

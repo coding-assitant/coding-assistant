@@ -3,17 +3,12 @@ import { sendMessageToModel, cancelMessage } from '../services/modelService'; //
 import HistoryModal from './HistoryModal';
 import '../styles/sidebar.css';
 
-
 const Sidebar = ({ codeText, setCodeText }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isSending, setIsSending] = useState(false); // 新增状态变量
   const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false);
   const chatHistoryRef = useRef(null);
-
-  // useEffect(() => {
-  //   setInput(codeText);
-  // }, [codeText]);
 
   // 监听 messages 变化并滚动到最新消息
   useEffect(() => {
@@ -111,7 +106,6 @@ const Sidebar = ({ codeText, setCodeText }) => {
               className="close-button"
               onClick={() => setCodeText('')} // 点击按钮清空 codeText
             >
-              ×
             </button>
             <p className="code-text">{codeText}</p>
           </div>
@@ -121,7 +115,7 @@ const Sidebar = ({ codeText, setCodeText }) => {
         <div style={{ display: 'flex', width: '100%' }}>
           <textarea
             className="chat-input"
-            placeholder="输入消息..."
+            placeholder="给“coding assistant”发送消息"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
@@ -131,9 +125,20 @@ const Sidebar = ({ codeText, setCodeText }) => {
               }
             }}
           />
-          <button className="send-button" onClick={handleSendClick}>
-            {isSending ? '中断' : '发送'}
+          <button className='send-button' onClick={handleSendClick}>
+          {isSending ? (
+            <svg t="1737373005664" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8942" width="18" height="18">
+              <path d="M320 896a64 64 0 0 1-64-64V192a64 64 0 0 1 128 0v640a64 64 0 0 1-64 64zM704 896a64 64 0 0 1-64-64V192a64 64 0 0 1 128 0v640a64 64 0 0 1-64 64z" fill="#ffffff" p-id="8943">
+                </path></svg>
+            ) : (
+              <svg t="1737372825203" class="icon" viewBox="0 0 1024 1024" version="1.1" 
+              xmlns="http://www.w3.org/2000/svg" p-id="6861" width="18" height="18">
+                <path d="M975.104 356.096a48.896 48.896 0 0 0-48.896 48.64v443.136a76.8 76.8 0 0 1-76.8 76.8H175.616a76.8 76.8 0 0 1-76.8-76.8V404.736a48.896 48.896 0 0 0-97.792 0v443.136A175.872 175.872 0 0 0 175.616 1024h673.024A176.128 176.128 0 0 0 1024 847.872V404.736a48.896 48.896 0 0 0-48.896-48.64z" p-id="6862" fill="#ffffff"></path>
+                <path d="M386.56 748.8h246.016a51.2 51.2 0 0 1 51.2 41.472 48.896 48.896 0 0 1-48.384 56.064h-244.992a51.2 51.2 0 0 1-51.2-41.728 48.896 48.896 0 0 1 47.36-55.808zM547.328 4.352l204.8 234.752a12.8 12.8 0 0 1-9.728 21.248h-100.608a12.544 12.544 0 0 0-12.544 11.008c-7.68 54.528-53.248 296.192-269.056 332.8a13.056 13.056 0 0 1-10.496-22.784 272.896 272.896 0 0 0 99.072-184.832 1001.728 1001.728 0 0 0 7.424-122.624 13.312 13.312 0 0 0-12.8-13.056H332.8a12.8 12.8 0 0 1-9.728-21.248l204.8-234.496a12.8 12.8 0 0 1 19.456-0.768z" p-id="6863" fill="#ffffff">
+                </path></svg> 
+            )}
           </button>
+          {/* <Button>按钮</Button> */}
         </div>
       </div>
   
@@ -143,6 +148,7 @@ const Sidebar = ({ codeText, setCodeText }) => {
         onClose={() => setIsHistoryModalVisible(false)}
       />
     </div>
+    
   );
 };
 

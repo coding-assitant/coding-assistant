@@ -19,6 +19,11 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.tsx?$/,  // 处理 .ts 和 .tsx 文件
+        use: 'ts-loader',  // 使用 ts-loader 处理 TypeScript 文件
+        exclude: /node_modules/,
+      },  
+      {
         // 处理JS和JSX文件
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -67,7 +72,7 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: ['.js', '.jsx'],  // 允许省略JS和JSX扩展名
+    extensions: ['.js', '.jsx', '.ts', '.tsx'], // 解析文件扩展名
   },
   mode: 'development',  // 使用开发模式，可以根据需要改为'production'用于生产环境
 };
