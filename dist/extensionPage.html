@@ -14,6 +14,7 @@
       <div class="container-_osWi9">
         <div class="left-_tHqUN">
           <!-- 上边栏左侧内容可以添加 logo 或者其他内容 -->
+          <button id="expand-sidebar-btn" class="sidebar-btn" style="display: none;">▶</button>
         </div>
         <div class="right-ANm42w">
           <button data-testid="to_login_button" class="semi-button semi-button-primary samantha-button-aiwXEk secondary-uIvuTO medium-UIYozi h-36 px-20 !rounded-12 s-font-xs-strong !text-white" type="button" aria-disabled="false">
@@ -30,7 +31,14 @@
   <!-- 左侧边栏 -->
   <aside class="leftSide-ptURZT">
     <div class="left-side-content">
-      <button class="sidebar-btn">新对话</button>
+      <!-- Logo 和关闭按钮 -->
+      <div class="sidebar-header">
+        <div class="sidebar-logo">BNUer</div> <!-- 用文字替代 logo -->
+        <button id="collapse-sidebar-btn" class="sidebar-btn">◀</button>
+      </div>
+      <!-- 新对话按钮 -->
+      <button class="sidebar-btn new-conversation-btn">新对话</button>
+      <!-- 其他菜单项 -->
       <div class="left-side-item">
         <span class="icon">🔍</span>
         <span>AI 搜索</span>
@@ -75,9 +83,7 @@
     </footer>
   </main>
 
-  <script>
-    // 这里可以添加控制左侧边栏的JS逻辑
-  </script>
+  <script src="extensionPage.js"></script>
 
 </body>
 </html>

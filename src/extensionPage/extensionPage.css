@@ -41,9 +41,9 @@ aside.leftSide-ptURZT .left-side-content {
 }
 
 aside.leftSide-ptURZT .left-side-item {
-  margin: 10px 0;
-  padding: 10px;
-  font-size: 16px;
+  margin: 5px 0; /* 减少上下边距 */
+  padding: 9px; /* 减少内边距 */
+  font-size: 16px; /* 减小字体大小 */
   border-radius: var(--s-radius-m, 16px);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -55,9 +55,15 @@ aside.leftSide-ptURZT .left-side-item:hover {
 
 /* 设置左侧边栏的图标大小 */
 aside.leftSide-ptURZT .left-side-item .icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px;
+  width: 21px; /* 减小图标大小 */
+  height: 21px; /* 减小图标大小 */
+  margin-right: 9px; /* 减小图标与文字的间距 */
+}
+
+/* 缩起状态 */
+aside.leftSide-ptURZT.collapsed {
+  width: 0; /* 完全缩起 */
+  overflow: hidden; /* 隐藏内容 */
 }
 
 /* 设置左侧菜单项按钮 */
@@ -78,6 +84,30 @@ button.sidebar-btn:hover {
   transform: translateX(10px);
 }
 
+/* 侧边栏头部布局 */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between; /* Logo 和关闭按钮左右对齐 */
+  align-items: center; /* 垂直居中 */
+  margin-top: -10px; /* 将头部布局往上移动 10px */
+  margin-bottom: 20px; /* 与下方内容的间距 */
+}
+
+/* Logo 文字样式 */
+.sidebar-logo {
+  font-size: 20px; /* 设置字体大小 */
+  font-weight: bold; /* 设置字体加粗 */
+  color: #333; /* 设置字体颜色 */
+}
+
+/* 新对话按钮样式 */
+.new-conversation-btn {
+  width: 100%; /* 按钮宽度占满父容器 */
+  margin-bottom: 20px; /* 与下方内容的间距 */
+}
+
+
+
 /* 主体内容区域样式 */
 main {
   flex-grow: 1;
@@ -88,17 +118,32 @@ main {
   transition: margin-left 0.3s ease;
 }
 
+/* 缩起时调整主体内容的左边距 */
+main.collapsed {
+  margin-left: 0; /* 主体内容左边距为 0 */
+}
+
 main.content-shift {
   margin-left: 0;
 }
 
 /* 主体内容的卡片样式 */
 .card {
-  background-color: var(--s-color-bg-quaternary, #ebecef);
+  background-color: rgba(255, 255, 255, 0.5); /* 半透明背景 */
   padding: 20px;
   border-radius: var(--s-radius-m, 16px);
-  box-shadow: var(--s-shadow-lv1, 0px 1px 2px 0px rgba(0, 0, 0, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.3); /* 半透明边框 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* 多重阴影增强立体感 */
+  backdrop-filter: blur(10px); /* 毛玻璃效果 */
   margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+/* 鼠标悬停时增强效果 */
+.card:hover {
+  background-color: rgba(255, 255, 255, 0.7); /* 更不透明的背景 */
+  border-color: rgba(255, 255, 255, 0.5); /* 更明显的边框 */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1); /* 更强的阴影 */
 }
 
 /* 滑动动画 */
@@ -216,4 +261,9 @@ footer a:hover {
 .header-QmdZVu .right-ANm42w button:active {
   outline: none;
   box-shadow: 0px 0px 5px rgba(0, 87, 255, 0.5);
+}
+
+/* 上边栏的展开按钮样式 */
+#expand-sidebar-btn {
+  margin-right: 10px;
 }

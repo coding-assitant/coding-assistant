@@ -1,36 +1,25 @@
-// JavaScript for extensionPage.html
+// 获取按钮和侧边栏元素
+const collapseSidebarBtn = document.getElementById('collapse-sidebar-btn');
+const expandSidebarBtn = document.getElementById('expand-sidebar-btn');
+const sidebar = document.querySelector('.leftSide-ptURZT');
+const mainContent = document.querySelector('main');
 
-// Button event listeners
+// 点击缩起按钮
+collapseSidebarBtn.addEventListener('click', function () {
+  // 缩起侧边栏
+  sidebar.classList.add('collapsed');
+  mainContent.classList.add('collapsed');
 
-document.getElementById('new-conversation-btn').addEventListener('click', function() {
-    // 在这里添加创建新对话的逻辑
-    alert('New conversation created!');
+  // 显示上边栏的展开按钮
+  expandSidebarBtn.style.display = 'block';
 });
 
-// Show sidebar on hover
-document.getElementById('sidebar-btn').addEventListener('mouseover', function() {
-    document.getElementById('sidebar').style.display = 'block';
-});
+// 点击展开按钮
+expandSidebarBtn.addEventListener('click', function () {
+  // 展开侧边栏
+  sidebar.classList.remove('collapsed');
+  mainContent.classList.remove('collapsed');
 
-// Show sidebar on click
-document.getElementById('sidebar-btn').addEventListener('click', function() {
-    document.getElementById('sidebar').style.display = 'block';
-});
-
-// Hide sidebar when mouse leaves
-document.getElementById('sidebar').addEventListener('mouseleave', function() {
-    document.getElementById('sidebar').style.display = 'none';
-});
-
-const hoverZone = document.getElementById('hover-zone');
-const sidebar = document.getElementById('sidebar');
-
-// 鼠标悬停左侧边缘时显示侧边栏
-hoverZone.addEventListener('mouseover', () => {
-  sidebar.style.display = 'block';
-});
-
-// 鼠标移出侧边栏时隐藏
-sidebar.addEventListener('mouseleave', () => {
-  sidebar.style.display = 'none';
+  // 隐藏上边栏的展开按钮
+  expandSidebarBtn.style.display = 'none';
 });
