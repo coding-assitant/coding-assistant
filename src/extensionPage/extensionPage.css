@@ -1,0 +1,219 @@
+/* 设定全局样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 设置字体、背景颜色等 */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, Segoe UI, SF Pro SC, SF Pro Display, SF Pro Icons, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+/* 左侧边栏样式 */
+aside.leftSide-ptURZT {
+  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--left-side-width, 240px);
+  height: 100vh;
+  background-color: #f1f1f1;
+  box-shadow: var(--s-shadow-lv2-brand, 0px 6px 10px 0px rgba(0, 102, 255, 0.1));
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
+  z-index: 20;
+}
+
+aside.leftSide-ptURZT.open {
+  transform: translateX(0);
+}
+
+aside.leftSide-ptURZT .left-side-content {
+  padding: 20px;
+  color: var(--s-color-text-primary, #000);
+}
+
+aside.leftSide-ptURZT .left-side-item {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: var(--s-radius-m, 16px);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+aside.leftSide-ptURZT .left-side-item:hover {
+  background-color: var(--s-color-brand-primary-transparent-3, rgba(0, 87, 255, 0.15));
+  color: var(--s-color-brand-primary-default, #0057ff);
+}
+
+/* 设置左侧边栏的图标大小 */
+aside.leftSide-ptURZT .left-side-item .icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+/* 设置左侧菜单项按钮 */
+button.sidebar-btn {
+  background-color: var(--s-color-brand-primary-default, #0057ff);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: var(--s-radius-s, 12px);
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: var(--s-shadow-lv3-brand, 0px 10px 20px 0px rgba(0, 102, 255, 0.12));
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button.sidebar-btn:hover {
+  background-color: var(--s-color-brand-primary-hover, #004ad9);
+  transform: translateX(10px);
+}
+
+/* 主体内容区域样式 */
+main {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #fff;
+  margin-top: 60px; /* 留出上边栏高度 */
+  margin-left: var(--left-side-width, 240px);
+  transition: margin-left 0.3s ease;
+}
+
+main.content-shift {
+  margin-left: 0;
+}
+
+/* 主体内容的卡片样式 */
+.card {
+  background-color: var(--s-color-bg-quaternary, #ebecef);
+  padding: 20px;
+  border-radius: var(--s-radius-m, 16px);
+  box-shadow: var(--s-shadow-lv1, 0px 1px 2px 0px rgba(0, 0, 0, 0.05));
+  margin-bottom: 20px;
+}
+
+/* 滑动动画 */
+@keyframes slideIn {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* 设置左侧边栏的动画效果 */
+aside.leftSide-ptURZT {
+  animation: slideIn 0.3s forwards;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  aside.leftSide-ptURZT {
+    width: 200px;
+  }
+  
+  main {
+    margin-left: 0;
+  }
+
+  button.sidebar-btn {
+    width: 90%;
+    margin: 10px 5%;
+  }
+}
+
+/* 设定按钮和其他元素的颜色变化 */
+button:focus, button:active {
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(0, 87, 255, 0.5);
+}
+
+button.sidebar-btn:disabled {
+  background-color: var(--s-color-brand-primary-disable, rgba(0, 87, 255, 0.3));
+  cursor: not-allowed;
+}
+
+button.sidebar-btn {
+  transition: all 0.3s ease;
+}
+
+footer {
+  text-align: center;
+  color: #777;
+  font-size: 0.9rem;
+  margin-top: 20px;
+}
+
+footer a {
+  color: var(--s-color-text-primary, #000);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* 上边栏样式 */
+.header-QmdZVu {
+  background-color: #fff;
+  box-shadow: var(--s-shadow-lv2, 0px 6px 10px 0px rgba(0, 0, 0, 0.1));
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height, 56px);
+  z-index: 10;
+}
+
+.header-QmdZVu .relative {
+  position: relative;
+  padding: 0 20px;
+}
+
+.header-QmdZVu .container-_osWi9 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-QmdZVu .left-_tHqUN {
+  display: flex;
+  align-items: center;
+}
+
+.header-QmdZVu .right-ANm42w {
+  display: flex;
+  align-items: center;
+}
+
+.header-QmdZVu .right-ANm42w button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  background-color: var(--s-color-brand-primary-default, #0057ff);
+  color: white;
+  border: none;
+  border-radius: var(--s-radius-s, 12px);
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.header-QmdZVu .right-ANm42w button:hover {
+  background-color: var(--s-color-brand-primary-hover, #004ad9);
+}
+
+.header-QmdZVu .right-ANm42w button:focus, 
+.header-QmdZVu .right-ANm42w button:active {
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(0, 87, 255, 0.5);
+}
