@@ -1,3 +1,4 @@
+<!-- src/extensionPage/extensionPage.html -->
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -47,12 +48,8 @@
   </aside>
 
   <!-- 主体内容 -->
-  <main>
+  <main id="main"></main> <!-- React 将渲染到这里 -->
 
-    
-  </main>
-
-  <script src="extensionPage.js"></script>
-
+  <script type="module" src="extensionPage.bundle.js"></script> <!-- 确保这里引入的是 webpack 打包后的文件 -->
 </body>
 </html>

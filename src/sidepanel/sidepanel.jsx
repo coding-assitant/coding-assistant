@@ -1,6 +1,7 @@
 // SidePanel.js
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
+import '../styles/sidebar.css';
 // import { chrome } from 'browser';
 
 const SidePanel = () => {

@@ -10,6 +10,7 @@ module.exports = {
     contentScript: './src/content/contentScript.js',  // 内容脚本的入口文件
     background: './src/background/background.js',  // 后台服务脚本入口文件
     sidepanel: './src/sidepanel/sidepanel.jsx',  // 侧边栏React组件的入口文件
+    extensionPage: './src/extensionPage/extensionPage.jsx',
   },
   // 输出打包文件
   output: {
@@ -24,8 +25,7 @@ module.exports = {
         exclude: /node_modules/,
       },  
       {
-        // 处理JS和JSX文件
-        test: /\.jsx?$/,
+        test: /\.jsx?$/,  // 处理 .js 和 .jsx 文件
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -62,7 +62,7 @@ module.exports = {
         { from: 'public/manifest.json', to: 'manifest.json' },  // 复制manifest.json到dist目录
         { from: 'src/sidepanel/sidepanel.html', to: 'sidepanel.html' },  // 添加侧边栏HTML文件
         { from: 'src/extensionPage/extensionPage.html', to: 'extensionPage.html' },
-        { from: 'src/extensionPage/extensionPage.js', to: 'extensionPage.js' },  
+        // { from: 'src/extensionPage/extensionPage.js', to: 'extensionPage.js' },  
         { from: 'src/extensionPage/extensionPage.css', to: 'extensionPage.css' },
       ],
     }),

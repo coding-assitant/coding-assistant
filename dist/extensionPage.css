@@ -110,6 +110,7 @@ button.sidebar-btn:hover {
 
 /* 主体内容区域样式 */
 main {
+  position: relative;
   flex-grow: 1;
   padding: 20px;
   background-color: #fff;
@@ -232,6 +233,7 @@ footer a:hover {
 }
 
 .header-QmdZVu .left-_tHqUN {
+  margin-top: 10px;
   display: flex;
   align-items: center;
 }
