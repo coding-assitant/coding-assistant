@@ -1,247 +1,206 @@
-/* Reset default margin/padding for all elements */
+/* 设定全局样式 */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Set the body background color and text color */
+/* 设置字体、背景颜色等 */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, Segoe UI, SF Pro SC, SF Pro Display, SF Pro Icons, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
   background-color: #f4f4f4;
   color: #333;
-  padding: 20px;
-}
-
-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-h1 {
-  font-size: 2rem;
-  /* 调整标题文字大小 */
-  color: black;
-  /* 设置标题字体颜色为黑色 */
-}
-
-p {
-  font-size: 1rem;
-  /* 调整段落文字大小 */
-  margin-top: 10px;
-  color: #666;
-}
-
-/* Main section layout */
-main {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  width: 60%;
-  /* 按钮只占界面的五分之三 */
-  margin: 0 auto;
-  /* 居中对齐 */
-}
-
-/* Style each feature box */
-.feature {
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  /* 调整内边距 */
-  text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.feature:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-}
-
-.feature h2 {
-  font-size: 1.5rem;
-  /* 调整标题文字大小 */
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.feature p {
-  font-size: 0.9rem;
-  /* 调整段落文字大小 */
-  color: #555;
-  margin-bottom: 15px;
-}
-
-button {
-  background-color: white;
-  /* 按钮颜色为白色 */
-  color: black;
-  /* 文字为黑色 */
-  padding: 4px 8px;
-  /* 调整按钮内边距 */
-  border: 2px solid black;
-  /* 添加边框 */
-  border-radius: 20px;
-  /* 调整圆角半径 */
-  cursor: pointer;
-  font-size: 0.7rem;
-  /* 调整按钮文字大小 */
-  transition: background-color 0.3s, color 0.3s;
-}
-
-button:hover {
-  background-color: #f0f0f0;
-  /* 悬停时按钮颜色 */
-  color: black;
-}
-
-/* New conversation button styling */
-#new-conversation-btn {
-  position: absolute;
-  top: 20px;
-  left: 80px;
-  /* 调整位置以适应新按钮 */
-  background-color: transparent;
-  color: black;
-  padding: 4px 8px;
-  border: 2px solid black;
-  border-radius: 20px;
-  /* 调整圆角半径 */
-  cursor: pointer;
-  font-size: 0.7rem;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-#new-conversation-btn:hover {
-  background-color: black;
-  color: white;
-}
-
-/* Sidebar button styling */
-#sidebar-btn {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background-color: transparent;
-  color: black;
-  padding: 4px 8px;
-  border: 2px solid black;
-  border-radius: 20px;
-  /* 调整圆角半径 */
-  cursor: pointer;
-  font-size: 0.7rem;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-#sidebar-btn:hover {
-  background-color: black;
-  color: white;
-}
-
-#sidebar {
-  position: fixed;
-  /* 让侧边栏固定在页面左侧 */
-  top: 10%;
-  /* 距顶部适当位置 */
-  left: 0;
-  width: 20%;
-  /* 宽度为页面宽度的20% */
-  max-width: 300px;
-  /* 最大宽度限制 */
-  height: 61.8vh;
-  /* 使用黄金分割比例的高度 */
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 15px;
-  font-size: 1rem;
-  /* 设置字体大小 */
-  display: none;
-  /* 默认隐藏 */
-  overflow-y: auto;
-  /* 如果内容超过高度，启用滚动条 */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  /* 添加阴影 */
-}
-
-#background-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-  /* 确保背景动画在侧边栏后面 */
-  pointer-events: none;
-  /* 确保背景不会捕获鼠标事件 */
-}
-
-#hover-zone {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 20px;
-  /* 触发区域的宽度 */
-  height: 100%;
-  z-index: 10;
-  /* 确保它位于最顶层 */
-  background-color: transparent;
-  /* 保持透明 */
-  cursor: pointer;
-}
-
-#sidebar button {
+  min-height: 100vh;
   display: flex;
-  /* 使用 flex 布局 */
-  align-items: center;
-  /* 图标与文字垂直居中 */
   justify-content: flex-start;
-  /* 图标和文字左对齐 */
-  width: 100%;
-  font-size: 1rem;
-  /* 设置字体大小 */
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  text-align: left;
+  align-items: stretch;
+}
+
+/* 左侧边栏样式 */
+aside.leftSide-ptURZT {
+  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--left-side-width, 240px);
+  height: 100vh;
+  background-color: #f1f1f1;
+  box-shadow: var(--s-shadow-lv2-brand, 0px 6px 10px 0px rgba(0, 102, 255, 0.1));
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
+  z-index: 20;
+}
+
+aside.leftSide-ptURZT.open {
+  transform: translateX(0);
+}
+
+aside.leftSide-ptURZT .left-side-content {
+  padding: 20px;
+  color: var(--s-color-text-primary, #000);
+}
+
+aside.leftSide-ptURZT .left-side-item {
+  margin: 5px 0; /* 减少上下边距 */
+  padding: 9px; /* 减少内边距 */
+  font-size: 16px; /* 减小字体大小 */
+  border-radius: var(--s-radius-m, 16px);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+aside.leftSide-ptURZT .left-side-item:hover {
+  background-color: var(--s-color-brand-primary-transparent-3, rgba(0, 87, 255, 0.15));
+  color: var(--s-color-brand-primary-default, #0057ff);
+}
+
+/* 设置左侧边栏的图标大小 */
+aside.leftSide-ptURZT .left-side-item .icon {
+  width: 21px; /* 减小图标大小 */
+  height: 21px; /* 减小图标大小 */
+  margin-right: 9px; /* 减小图标与文字的间距 */
+}
+
+/* 缩起状态 */
+aside.leftSide-ptURZT.collapsed {
+  width: 0; /* 完全缩起 */
+  overflow: hidden; /* 隐藏内容 */
+}
+
+/* 设置左侧菜单项按钮 */
+button.sidebar-btn {
+  background-color: var(--s-color-brand-primary-default, #0057ff);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: var(--s-radius-s, 12px);
   cursor: pointer;
+  font-size: 16px;
+  box-shadow: var(--s-shadow-lv3-brand, 0px 10px 20px 0px rgba(0, 102, 255, 0.12));
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button.sidebar-btn:hover {
+  background-color: var(--s-color-brand-primary-hover, #004ad9);
+  transform: translateX(10px);
+}
+
+/* 侧边栏头部布局 */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between; /* Logo 和关闭按钮左右对齐 */
+  align-items: center; /* 垂直居中 */
+  margin-top: -10px; /* 将头部布局往上移动 10px */
+  margin-bottom: 20px; /* 与下方内容的间距 */
+}
+
+/* Logo 文字样式 */
+.sidebar-logo {
+  font-size: 20px; /* 设置字体大小 */
+  font-weight: bold; /* 设置字体加粗 */
+  color: #333; /* 设置字体颜色 */
+}
+
+/* 新对话按钮样式 */
+.new-conversation-btn {
+  width: 100%; /* 按钮宽度占满父容器 */
+  margin-bottom: 20px; /* 与下方内容的间距 */
+}
+
+
+
+/* 主体内容区域样式 */
+main {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #fff;
+  margin-top: 60px; /* 留出上边栏高度 */
+  margin-left: var(--left-side-width, 240px);
+  transition: margin-left 0.3s ease;
+}
+
+/* 缩起时调整主体内容的左边距 */
+main.collapsed {
+  margin-left: 0; /* 主体内容左边距为 0 */
+}
+
+main.content-shift {
+  margin-left: 0;
+}
+
+/* 主体内容的卡片样式 */
+.card {
+  background-color: rgba(255, 255, 255, 0.5); /* 半透明背景 */
+  padding: 20px;
+  border-radius: var(--s-radius-m, 16px);
+  border: 1px solid rgba(255, 255, 255, 0.3); /* 半透明边框 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* 多重阴影增强立体感 */
+  backdrop-filter: blur(10px); /* 毛玻璃效果 */
+  margin-bottom: 20px;
   transition: all 0.3s ease;
 }
 
-#sidebar button:hover {
-  background-color: #e6f7ff;
-  /* 悬停背景色 */
-  color: #0078d7;
-  /* 悬停文字颜色 */
-  box-shadow: 0 0 8px rgba(0, 120, 215, 0.5);
-  /* 悬停阴影效果 */
-  border: 1px solid #0078d7;
-  /* 悬停边框高亮 */
+/* 鼠标悬停时增强效果 */
+.card:hover {
+  background-color: rgba(255, 255, 255, 0.7); /* 更不透明的背景 */
+  border-color: rgba(255, 255, 255, 0.5); /* 更明显的边框 */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1); /* 更强的阴影 */
 }
 
-#sidebar button .icon {
-  width: 20px;
-  /* 图标宽度 */
-  height: 20px;
-  /* 图标高度 */
-  margin-right: 10px;
-  /* 图标与文字的间距 */
+/* 滑动动画 */
+@keyframes slideIn {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
-/* Footer styling */
+/* 设置左侧边栏的动画效果 */
+aside.leftSide-ptURZT {
+  animation: slideIn 0.3s forwards;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  aside.leftSide-ptURZT {
+    width: 200px;
+  }
+  
+  main {
+    margin-left: 0;
+  }
+
+  button.sidebar-btn {
+    width: 90%;
+    margin: 10px 5%;
+  }
+}
+
+/* 设定按钮和其他元素的颜色变化 */
+button:focus, button:active {
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(0, 87, 255, 0.5);
+}
+
+button.sidebar-btn:disabled {
+  background-color: var(--s-color-brand-primary-disable, rgba(0, 87, 255, 0.3));
+  cursor: not-allowed;
+}
+
+button.sidebar-btn {
+  transition: all 0.3s ease;
+}
+
 footer {
   text-align: center;
-  margin-top: 40px;
   color: #777;
   font-size: 0.9rem;
+  margin-top: 20px;
 }
 
 footer a {
-  color: black;
-  /* 将链接颜色更改为黑色 */
+  color: var(--s-color-text-primary, #000);
   text-decoration: none;
 }
 
@@ -249,19 +208,62 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* Responsive Design: Make the grid layout stack on small screens */
-@media (max-width: 768px) {
-  main {
-    grid-template-columns: 1fr;
-    width: 100%;
-    /* 在小屏幕上占满宽度 */
-  }
+/* 上边栏样式 */
+.header-QmdZVu {
+  background-color: #fff;
+  box-shadow: var(--s-shadow-lv2, 0px 6px 10px 0px rgba(0, 0, 0, 0.1));
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height, 56px);
+  z-index: 10;
 }
 
-@media (max-width: 768px) {
-  #sidebar {
-    width: 80%;
-    /* 小屏幕上调整为更宽的侧边栏 */
-    max-width: none;
-  }
+.header-QmdZVu .relative {
+  position: relative;
+  padding: 0 20px;
+}
+
+.header-QmdZVu .container-_osWi9 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-QmdZVu .left-_tHqUN {
+  display: flex;
+  align-items: center;
+}
+
+.header-QmdZVu .right-ANm42w {
+  display: flex;
+  align-items: center;
+}
+
+.header-QmdZVu .right-ANm42w button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  background-color: var(--s-color-brand-primary-default, #0057ff);
+  color: white;
+  border: none;
+  border-radius: var(--s-radius-s, 12px);
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.header-QmdZVu .right-ANm42w button:hover {
+  background-color: var(--s-color-brand-primary-hover, #004ad9);
+}
+
+.header-QmdZVu .right-ANm42w button:focus, 
+.header-QmdZVu .right-ANm42w button:active {
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(0, 87, 255, 0.5);
+}
+
+/* 上边栏的展开按钮样式 */
+#expand-sidebar-btn {
+  margin-right: 10px;
 }
