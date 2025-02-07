@@ -139,7 +139,7 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
       id: await getStorageSync('id')
     });
 
-    await fetchSSE('http://172.16.215.118:8888/v1/chat-messages', {
+    await fetchSSE('http://172.22.98.237:8888/v1/chat-messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
