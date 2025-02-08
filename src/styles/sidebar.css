@@ -434,3 +434,70 @@
   overflow: hidden; /* 隐藏溢出 */
   text-overflow: ellipsis; /* 显示省略号 */
 }
+
+/* 模型切换触发按钮 */
+.model-switch-trigger {
+  position: absolute;
+  bottom: 80px;
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #0057ff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.model-switch-trigger:hover {
+  transform: translateY(-3px);
+}
+
+/* 模型切换容器 */
+.model-switch-container {
+  position: absolute;
+  bottom: 110px;
+  right: 15px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: white;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.model-switch-container.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-10px);
+}
+
+.model-switch-container button {
+  padding: 8px 16px;
+  border: 1px solid #eee;
+  background: #f8f8f8;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.model-switch-container button.active {
+  background: #0057ff;
+  color: white;
+  border-color: #004ad9;
+}
+
+.model-switch-container button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}

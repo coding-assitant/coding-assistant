@@ -1,10 +1,44 @@
 import fetchSSE from '../utils/fetchSSE';
+<<<<<<< HEAD
+=======
+import fetchSSE2 from '../utils/fetchSSE2';
+import OpenAI from "openai";
+>>>>>>> newmodelchange
 import {marked} from 'marked';
 import {saveFavorite} from './favoriteService'
 import { saveHistory } from './historyService';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css'; // 可根据需要选择其他主题样式
 
+<<<<<<< HEAD
+=======
+let currentModel = 'default'; // 默认模型
+
+export function switchModel(model) {
+  if (model === 'default' || model === 'deepSeek') {
+    currentModel = model;
+    console.log(`Switched to model: ${model}`);
+  } else {
+    console.error('Invalid model specified');
+  }
+}
+
+function getApiConfig() {
+  if (currentModel === 'deepSeek') {
+    return {
+      apiKey: process.env.DEEPSEEK_API_KEY, // 从环境变量获取 API Key
+      apiUrl: 'https://api.deepseek.com/chat/completions', // DeepSeek API 地址
+      dangerouslyAllowBrowser: true // 允许在浏览器环境中使用
+    };
+  }
+  // 默认模型的 API 配置
+  return {
+    //apiKey: process.env.API_KEY,
+    //apiUrl: 'default_api_url' // 替换为默认模型的 API URL
+  };
+}
+
+>>>>>>> newmodelchange
 // 配置 marked 的高亮函数
 marked.use({
   renderer: {
@@ -91,7 +125,12 @@ function getStorageSync(key) {
   });
 }
 
+<<<<<<< HEAD
 export async function sendMessageToModel(messageContent, onUserMessage, onModelMessage, setIsSending, codetext='',isRetry = false, messageObject = null) {
+=======
+export async function sendMessageToModel(messageContent, onUserMessage, onModelMessage, setIsSending, codetext = '', isRetry = false, messageObject = null) {
+  console.log('sendMessageToModel called with messageContent:', messageContent);
+>>>>>>> newmodelchange
   isRetry = !!isRetry; // 确保 isRetry 为布尔值
   controller = new AbortController();
   const { signal } = controller;
@@ -104,11 +143,17 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
     saveHistory('user', messageContent);
     messageHistory.set(userBubbleId, messageObject);  // 将完整的消息对象存入 Map
     globalState.latestMessageId = userBubbleId; // 更新最新消息 ID
+<<<<<<< HEAD
     // console.log("新消息存储到 messageHistory:", userBubbleId, messageContent);
     globalState.retryBubbleId = null;
     globalState.latestMessageId = userBubbleId; // 更新最新消息 ID
   } else if (messageObject) {
     // console.log("重试消息使用的 userBubbleId:", messageObject.id);
+=======
+    globalState.retryBubbleId = null;
+    globalState.latestMessageId = userBubbleId; // 更新最新消息 ID
+  } else if (messageObject) {
+>>>>>>> newmodelchange
     if (!messageObject) {
       return;
     }
@@ -128,7 +173,87 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
 
   let modelResponseContent = "";
 
+<<<<<<< HEAD
   try {
+=======
+if (currentModel === 'deepSeek') {
+
+  try {
+    const apiConfig = getApiConfig();
+    await fetchSSE2('https://api.deepseek.com/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiConfig.apiKey}`
+      },
+      body: JSON.stringify({
+        model: "deepseek-chat",
+        messages: [
+          { role: "system", content: "You are a helpful assistant." },
+          { role: "user", content: messageObject.content },
+        ],
+        stream: true,
+      }),
+      onMessage: (data) => {
+        try {
+          const parsedData = JSON.parse(data);
+          if (parsedData.choices && parsedData.choices[0] && parsedData.choices[0].delta) {
+            const content = parsedData.choices[0].delta.content || "";
+            modelResponseContent += content;
+
+            if (isRetry && isFirstUpdate) {
+              // 清除“重新回复中…”的内容并显示新内容
+              onModelMessage({ role: 'system', content: '', loading: false, id: modelBubbleId });
+              isFirstUpdate = false; // 设置标志，确保只清除一次
+            } else if (!modelBubbleId) {
+              // 正常回复的情况下，首次接收数据时替换“模型正在思考中…”气泡
+              onModelMessage({ role: 'system', content: '', loading: false, id: loadingBubbleId });
+              modelBubbleId = loadingBubbleId; // 使用 loadingBubbleId 作为最终模型气泡 ID
+              globalState.currentModelBubbleId = modelBubbleId; // 更新 currentModelBubbleId
+            }
+            
+            // 更新气泡内容为当前模型响应
+            onModelMessage({
+              role: 'model',
+              content: marked.parse(modelResponseContent),
+              timestamp: timestamp,
+              loading: true,
+              id: modelBubbleId,
+            });
+          }
+        } catch (err) {
+          console.error("解析数据时出错：", err);
+        }
+      }
+    });
+
+    // 响应完成后更新模型的最终消息并移除加载状态
+    if (modelBubbleId) {
+      const finalContent = marked.parse(modelResponseContent.trim());
+      const contentWithButton = `${finalContent.trim()}${generateButtonHTML(modelBubbleId).trim()}`;
+      onModelMessage({
+        role: 'model',
+        content: contentWithButton,
+        timestamp: timestamp,
+        loading: false,
+        id: modelBubbleId,
+      });
+      bindButtonEvents(modelBubbleId, modelResponseContent, onModelMessage);
+
+      // 仅在正常回复时，保存气泡 ID 为 retryBubbleId
+      if (!isRetry) {
+        globalState.retryBubbleId = modelBubbleId;
+      }
+    }
+  } catch (error) {
+    // 处理网络或请求错误
+    onModelMessage({ role: 'error', content: '错误：无法连接到模型，请稍后再试。', timestamp });
+    console.error("详细错误信息：", error);
+  }
+} else {
+    // 默认模型
+    try {
+>>>>>>> newmodelchange
     setIsSending(true);
 
 
@@ -139,7 +264,11 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
       id: await getStorageSync('id')
     });
 
+<<<<<<< HEAD
     await fetchSSE('http://172.22.98.237:8888/v1/chat-messages', {
+=======
+    await fetchSSE('http://172.16.215.118:8888/v1/chat-messages', {
+>>>>>>> newmodelchange
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -221,6 +350,10 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
     setIsSending(false);
   }
 }
+<<<<<<< HEAD
+=======
+}
+>>>>>>> newmodelchange
 
 export function cancelMessage() {
   if (controller) controller.abort();

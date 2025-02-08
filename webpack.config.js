@@ -3,6 +3,16 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const dotenv = require('dotenv').config({ path: './.env' });
 
+<<<<<<< HEAD
+=======
+const config = {
+  deepSeek: {
+    apiKey: process.env.DEEPSEEK_API_KEY || 'sk-a13bc00931084419958aca508467b94b',
+    apiUrl: process.env.DEEPSEEK_API_URL || 'https://api.deepseek.com/chat/completions'
+  }
+};
+
+>>>>>>> newmodelchange
 module.exports = {
   devtool: 'source-map',  // 启用 source map
   // 定义入口文件
@@ -68,9 +78,17 @@ module.exports = {
     }),
     // 注入环境变量
     new webpack.DefinePlugin({
+<<<<<<< HEAD
       'process.env.API_KEY': JSON.stringify(process.env.API_KEY),
     }),
   ],
+=======
+    'process.env.API_KEY': JSON.stringify(process.env.API_KEY),
+    'process.env.DEEPSEEK_API_KEY': JSON.stringify(config.deepSeek.apiKey),
+    'process.env.DEEPSEEK_API_URL': JSON.stringify(config.deepSeek.apiUrl),
+  }),
+],
+>>>>>>> newmodelchange
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'], // 解析文件扩展名
   },

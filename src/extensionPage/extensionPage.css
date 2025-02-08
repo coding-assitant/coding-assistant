@@ -269,3 +269,88 @@ footer a:hover {
 #expand-sidebar-btn {
   margin-right: 10px;
 }
+
+/* 新增触发按钮样式 */
+.model-switch-trigger {
+  position: absolute;
+  bottom: 80px;
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #0057ff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.model-switch-trigger:hover {
+  transform: translateY(-3px);
+}
+
+/* 修改模型切换容器样式 */
+.model-switch-container {
+  position: absolute;
+  bottom: 110px;
+  right: 15px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: white;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.model-switch-container.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-10px);
+}
+
+.model-switch-container button {
+  padding: 8px 16px;
+  border: 1px solid #eee;
+  background: #f8f8f8;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.model-switch-container button.active {
+  background: #0057ff;
+  color: white;
+  border-color: #004ad9;
+}
+
+.model-switch-container button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .model-switch-trigger {
+    bottom: 60px;
+    right: 15px;
+  }
+
+  .model-switch-container {
+    bottom: 100px;
+    right: 15px;
+    padding: 8px;
+  }
+
+  .model-switch-container button {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+}
