@@ -268,8 +268,6 @@ footer a:hover {
 /* 上边栏的展开按钮样式 */
 #expand-sidebar-btn {
   margin-right: 10px;
-<<<<<<< HEAD
-=======
 }
 
 /* 新增触发按钮样式 */
@@ -355,5 +353,4 @@ footer a:hover {
     padding: 6px 12px;
     font-size: 14px;
   }
->>>>>>> newmodelchange
 }

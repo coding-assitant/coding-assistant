@@ -1,17 +1,12 @@
 import fetchSSE from '../utils/fetchSSE';
-<<<<<<< HEAD
-=======
 import fetchSSE2 from '../utils/fetchSSE2';
 import OpenAI from "openai";
->>>>>>> newmodelchange
 import {marked} from 'marked';
 import {saveFavorite} from './favoriteService'
 import { saveHistory } from './historyService';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css'; // 可根据需要选择其他主题样式
 
-<<<<<<< HEAD
-=======
 let currentModel = 'default'; // 默认模型
 
 export function switchModel(model) {
@@ -38,7 +33,6 @@ function getApiConfig() {
   };
 }
 
->>>>>>> newmodelchange
 // 配置 marked 的高亮函数
 marked.use({
   renderer: {
@@ -125,12 +119,8 @@ function getStorageSync(key) {
   });
 }
 
-<<<<<<< HEAD
-export async function sendMessageToModel(messageContent, onUserMessage, onModelMessage, setIsSending, codetext='',isRetry = false, messageObject = null) {
-=======
 export async function sendMessageToModel(messageContent, onUserMessage, onModelMessage, setIsSending, codetext = '', isRetry = false, messageObject = null) {
   console.log('sendMessageToModel called with messageContent:', messageContent);
->>>>>>> newmodelchange
   isRetry = !!isRetry; // 确保 isRetry 为布尔值
   controller = new AbortController();
   const { signal } = controller;
@@ -143,17 +133,9 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
     saveHistory('user', messageContent);
     messageHistory.set(userBubbleId, messageObject);  // 将完整的消息对象存入 Map
     globalState.latestMessageId = userBubbleId; // 更新最新消息 ID
-<<<<<<< HEAD
-    // console.log("新消息存储到 messageHistory:", userBubbleId, messageContent);
     globalState.retryBubbleId = null;
     globalState.latestMessageId = userBubbleId; // 更新最新消息 ID
   } else if (messageObject) {
-    // console.log("重试消息使用的 userBubbleId:", messageObject.id);
-=======
-    globalState.retryBubbleId = null;
-    globalState.latestMessageId = userBubbleId; // 更新最新消息 ID
-  } else if (messageObject) {
->>>>>>> newmodelchange
     if (!messageObject) {
       return;
     }
@@ -173,12 +155,10 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
 
   let modelResponseContent = "";
 
-<<<<<<< HEAD
-  try {
-=======
 if (currentModel === 'deepSeek') {
 
   try {
+    setIsSending(true);
     const apiConfig = getApiConfig();
     await fetchSSE2('https://api.deepseek.com/chat/completions', {
       method: 'POST',
@@ -223,7 +203,7 @@ if (currentModel === 'deepSeek') {
           }
         } catch (err) {
           console.error("解析数据时出错：", err);
-        }
+        } 
       }
     });
 
@@ -249,11 +229,12 @@ if (currentModel === 'deepSeek') {
     // 处理网络或请求错误
     onModelMessage({ role: 'error', content: '错误：无法连接到模型，请稍后再试。', timestamp });
     console.error("详细错误信息：", error);
+  }finally {
+    setIsSending(false);
   }
 } else {
     // 默认模型
     try {
->>>>>>> newmodelchange
     setIsSending(true);
 
 
@@ -264,11 +245,7 @@ if (currentModel === 'deepSeek') {
       id: await getStorageSync('id')
     });
 
-<<<<<<< HEAD
-    await fetchSSE('http://172.22.98.237:8888/v1/chat-messages', {
-=======
     await fetchSSE('http://172.16.215.118:8888/v1/chat-messages', {
->>>>>>> newmodelchange
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -350,10 +327,7 @@ if (currentModel === 'deepSeek') {
     setIsSending(false);
   }
 }
-<<<<<<< HEAD
-=======
 }
->>>>>>> newmodelchange
 
 export function cancelMessage() {
   if (controller) controller.abort();
