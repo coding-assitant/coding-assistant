@@ -181,6 +181,7 @@ if (currentModel === 'deepSeek') {
         ],
         stream: true,
       }),
+      signal, // 绑定 signal， 确保 AbortController 在发送请求之前就已经创建
       onMessage: (data) => {
         try {
           const parsedData = JSON.parse(data);
@@ -234,10 +235,14 @@ if (currentModel === 'deepSeek') {
       }
     }
   } catch (error) {
-    // 处理网络或请求错误
-    onModelMessage({ role: 'error', content: '错误：无法连接到模型，请稍后再试。', timestamp });
-    console.error("详细错误信息：", error);
-  }finally {
+    // 仅在非中断的情况下显示错误消息
+    if (error.name !== 'AbortError') {
+      onModelMessage({ role: 'error', content: '错误：无法连接到模型，请稍后再试。', timestamp });
+      console.error("详细错误信息：", error);
+    } else {
+      console.log('请求已中断，跳过错误提示');
+    }
+  } finally {
     setIsSending(false);
   }
 } else {
