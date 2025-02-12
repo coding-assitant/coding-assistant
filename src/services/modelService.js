@@ -145,7 +145,14 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
   let loadingBubbleId = generateUserBubbleId();
   let isFirstUpdate = true;
 
-  if (isRetry && messageObject) {
+  if (isRetry ) {
+    if (!messageObject) {
+      messageObject = messageHistory.get(globalState.latestMessageId);
+    }
+    if (!messageObject) {
+      console.error("⚠️ 重试时找不到对应的 messageObject");
+      return;  // 如果仍然为空，直接返回
+    }
     modelBubbleId = globalState.retryBubbleId;
     onModelMessage({ role: 'model', content: '', loading: false, id: modelBubbleId });
     onModelMessage({ role: 'system', content: '重新回复中...', timestamp: '', loading: true, id: modelBubbleId });
@@ -218,7 +225,8 @@ if (currentModel === 'deepSeek') {
         loading: false,
         id: modelBubbleId,
       });
-      bindButtonEvents(modelBubbleId, modelResponseContent, onModelMessage);
+      bindButtonEvents(modelBubbleId, modelResponseContent, onUserMessage, onModelMessage, setIsSending, messageObject);
+
 
       // 仅在正常回复时，保存气泡 ID 为 retryBubbleId
       if (!isRetry) {
@@ -333,7 +341,7 @@ export function cancelMessage() {
   if (controller) controller.abort();
 }
 
-function bindButtonEvents(id, content, onModelMessage, setIsSending, messageObject) {
+function bindButtonEvents(id, content, onUserMessage, onModelMessage, setIsSending, messageObject) {
   // 延迟绑定事件，确保按钮容器和按钮都已生成
   setTimeout(() => {
     // 检查按钮容器是否存在
@@ -383,7 +391,7 @@ function bindButtonEvents(id, content, onModelMessage, setIsSending, messageObje
       // 修正参数传递
       sendMessageToModel(
           originalMessageData.content, // 用户消息内容
-          null, // 不触发用户消息渲染
+          onUserMessage, 
           onModelMessage, // 渲染模型响应的回调
           setIsSending, // 控制发送状态的回调
           '', // 代码内容
