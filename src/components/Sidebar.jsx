@@ -142,7 +142,7 @@ const Sidebar = ({ codeText, setCodeText }) => {
               <button
                 className="close-button"
                 onClick={() => setCodeText('')} // 点击按钮清空 codeText
-              >
+              > X
               </button>
               <p className="code-text">{codeText}</p>
             </div>

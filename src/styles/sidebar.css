@@ -501,3 +501,45 @@
   transform: translateY(-2px);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
+
+/* 确保 .code-display-box 容器有相对定位 */
+.code-display-box {
+  position: relative;  /* 使其成为定位参考容器 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background-color: #f7f7f7;  /* 设置背景色，让内容更可见 */
+  border: 1px solid #ccc; /* 设置边框 */
+  border-radius: 8px;  /* 可选：让框有圆角 */
+}
+
+/* 设置按钮样式 */
+.close-button {
+  position: absolute;  /* 使用绝对定位 */
+  top: 3px;  /* 距离顶部 5px */
+  left: 3px;  /* 距离右边 5px */
+  width: 10px;  /* 设置按钮大小 */
+  height: 10px;
+  background-color: #a0a0a0;  /* 灰色 */
+  color: white;  /* 设置按钮文字颜色 */
+  border: none;
+  border-radius: 50%;  /* 圆形按钮 */
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;  /* 设置字体大小 */
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s; /* 添加过渡效果 */
+}
+
+.close-button:hover {
+  background-color: #707070;  /* 深灰色（悬停） */
+  transform: scale(1.1);  /* 鼠标悬停时按钮放大 */
+}
+
+.close-button:focus {
+  outline: none;  /* 去除按钮点击时的边框 */
+  box-shadow: 0 0 5px rgba(47, 50, 53, 0.7);  /* 灰色外阴影 */
+}
