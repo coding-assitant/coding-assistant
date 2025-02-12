@@ -24,6 +24,19 @@ expandSidebarBtn.addEventListener('click', function () {
   expandSidebarBtn.style.display = 'none';
 });
 
+
+document.getElementById('new-chat-btn').addEventListener('click', function () {
+    // 清空对话框
+    document.getElementById('chat-history').innerHTML = '';
+
+    // 发送请求通知后端创建新会话（如果需要）
+    // fetch('http://你的后端地址/api/new-chat', { method: 'POST' })
+    //     .then(response => response.json())
+    //     .then(data => console.log('新对话创建成功:', data))
+    //     .catch(error => console.error('新对话创建失败:', error));
+});
+
+
 // src/extensionPage/extensionPage.jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
