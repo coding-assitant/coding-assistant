@@ -124,15 +124,15 @@ const Sidebar = ({ codeText, setCodeText }) => {
       {/* 输入框容器外新增包裹层 */}
       <div className="input-area-wrapper">
         {/* 新增触发按钮 */}
-        <button
+        {/* <button
           className="model-switch-trigger"
           onClick={toggleModelSwitch}
         >
           {showModelSwitch ? '▼' : '▲'}
         </button>
-      
+       */}
         {/* 渲染模型切换容器 */}
-        <ModelSwitch />
+        {/* <ModelSwitch /> */}
 
         {/* 原有输入框容器 */}
         <div className="chat-input-container">
@@ -175,6 +175,23 @@ const Sidebar = ({ codeText, setCodeText }) => {
               )}
             </button>
           </div>
+          {/* 渲染模型切换容器 */}
+          <ModelSwitch />
+          <div className="button-row">
+            {/* 模型切换按钮 */}
+            <button
+              className="custom-button"
+              onClick={toggleModelSwitch}
+            >
+              {showModelSwitch ? '▼' : '▲'}
+            </button>
+
+            {/* 其他按钮可以放在这里 */}
+            {/* 例如：<button>其他按钮</button> */}
+          </div>
+
+          
+
         </div>
       </div>
 

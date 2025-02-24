@@ -1,10 +1,13 @@
 
-.side-panel-container{
+.side-panel-container {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  top: 1px;    /* 距离上边 20px */
+  right: 12px;  /* 距离右边 20px */
+  bottom: 15px; /* 距离下边 20px */
+  left: -1px;   /* 距离左边 20px */
+  width: auto;  /* 宽度可以自适应或设置为固定值 */
+  height: auto; /* 高度可以自适应或设置为固定值 */
 }
-
 /* 侧边栏容器样式 */
 .sidebar-container {
   position: absolute;
@@ -435,35 +438,66 @@
   text-overflow: ellipsis; /* 显示省略号 */
 }
 
-/* 模型切换触发按钮 */
-.model-switch-trigger {
-  position: absolute;
-  bottom: 80px;
-  right: 15px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #0057ff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+/* 按钮行样式 */
+.button-row {
   display: flex;
+  justify-content: flex-start; /* 按钮靠左对齐 */
   align-items: center;
-  justify-content: center;
-  z-index: 10;
+  gap: 10px; /* 按钮之间的间距 */
+  margin-top: 10px; /* 与输入框的间距 */
+  padding: 10px 10px; /* 上下左右内边距 */
+  position: relative; /* 为伪元素提供定位上下文 */
+  height: 5px;
+}
+
+/* 添加分隔线 */
+.button-row::before {
+  content: ''; /* 伪元素内容为空 */
+  position: absolute; /* 绝对定位 */
+  top: -5px; /* 向上偏移 5px，确保分隔线在按钮行上方 */
+  left: 0; /* 从左侧开始 */
+  right: 0; /* 延伸到右侧 */
+  height: 1px; /* 分隔线高度 */
+  background-color: #ddd; /* 分隔线颜色 */
+}
+
+/* 自定义按钮样式 */
+.custom-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.custom-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* 调整模型切换按钮的样式 */
+.model-switch-trigger {
+  position: static; /* 移除绝对定位 */
+  width: 5px; /* 自动宽度 */
+  height: 5px; /* 自动高度 */
+  border-radius: 50%; /* 圆角 */
+  background-color: #3f3f3f; /* 背景颜色 */
+  color: white; /* 文字颜色 */
+  border: none; /* 无边框 */
+  cursor: pointer; /* 鼠标悬停时显示手型 */
+  transition: background-color 0.3s ease; /* 过渡效果 */
 }
 
 .model-switch-trigger:hover {
-  transform: translateY(-3px);
+  background-color: #020202; /* 鼠标悬停时的背景颜色 */
 }
 
 /* 模型切换容器 */
 .model-switch-container {
   position: absolute;
-  bottom: 110px;
-  right: 15px;
+  bottom: 40px; /* 调整位置，确保在按钮行上方 */
+  left: 15px;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
@@ -492,9 +526,9 @@
 }
 
 .model-switch-container button.active {
-  background: #0057ff;
+  background: #3f3f3f;
   color: white;
-  border-color: #004ad9;
+  border-color: #292828;
 }
 
 .model-switch-container button:hover {
