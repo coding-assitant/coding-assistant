@@ -1,6 +1,6 @@
 async function fetchSSE(resource, options) {
   const { onMessage, onError, onMessageEnd, ...fetchOptions } = options;
-
+  
   // ÄÚÁª createParser º¯Êý
   function createParser(onParse) {
     let buffer = '';
@@ -13,19 +13,18 @@ async function fetchSSE(resource, options) {
           if (nextNewline === -1) break;
           const line = buffer.slice(position, nextNewline);
           position = nextNewline + 1;
-          console.log("Line matching :", line);
           if (line.startsWith('data:') && line.slice(5).trim().startsWith('{')) {
             const eventData = line.slice(5).trim();
             try {
               const parsedData = JSON.parse(eventData);
               if (parsedData.event === 'message') {
-                console.log("处理 message 类型事件:", parsedData);
+                // console.log("处理 message 类型事件:", parsedData);
                 onParse({ event: 'message', data: line.slice(5) });
               } else if (parsedData.event === 'error') {
                 console.error("处理 error 类型事件:", parsedData);
                 onError();  // 调用 onError 处理错误
               } else if (parsedData.event === 'message_end') {
-                console.log("处理 message_end 类型事件:", parsedData);
+                // console.log("处理 message_end 类型事件:", parsedData);
                 onMessageEnd();  // 调用 onMessageEnd 处理消息结束
               }
             } catch (e) {

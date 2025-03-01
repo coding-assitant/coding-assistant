@@ -38,10 +38,6 @@ marked.use({
   renderer: {
     code(code, infostring) {
       try {
-        console.log("Processing code block...");
-        console.log("Raw code block content:", code);
-        console.log("Infostring (language):", infostring);
-
         // 检查 code 是否为对象，并提取实际代码内容
         if (typeof code === 'object' && code !== null) {
           // console.warn("Code block content is an object. Extracting 'text' field.");
@@ -50,7 +46,6 @@ marked.use({
 
         // 确保 code 是字符串
         if (typeof code !== 'string') {
-          console.error("Code block content is not a string:", code);
           code = String(code || ''); // 转为字符串，避免报错
         }
 
@@ -63,7 +58,6 @@ marked.use({
           return `<pre><code class="hljs">${highlighted}</code></pre>`;
         }
       } catch (err) {
-        console.error("Error processing code block:", err);
         return `<pre><code>${code}</code></pre>`;
       }
     }
@@ -120,7 +114,7 @@ function getStorageSync(key) {
 }
 
 export async function sendMessageToModel(messageContent, onUserMessage, onModelMessage, setIsSending, codetext = '', isRetry = false, messageObject = null) {
-  console.log('sendMessageToModel called with messageContent:', messageContent);
+  // console.log('sendMessageToModel called with messageContent:', messageContent);
   isRetry = !!isRetry; // 确保 isRetry 为布尔值
   controller = new AbortController();
   const { signal } = controller;
@@ -150,7 +144,7 @@ export async function sendMessageToModel(messageContent, onUserMessage, onModelM
       messageObject = messageHistory.get(globalState.latestMessageId);
     }
     if (!messageObject) {
-      console.error("⚠️ 重试时找不到对应的 messageObject");
+      // console.error("⚠️ 重试时找不到对应的 messageObject");
       return;  // 如果仍然为空，直接返回
     }
     modelBubbleId = globalState.retryBubbleId;
@@ -248,91 +242,122 @@ if (currentModel === 'deepSeek') {
 } else {
     // 默认模型
     try {
-    setIsSending(true);
-
-
-    console.log('发送请求参数:', {
-      inputs: { code: codetext },
-      query: messageObject.content,
-      response_mode: 'streaming',
-      id: await getStorageSync('id')
-    });
-
-    await fetchSSE('http://172.16.215.118:8888/v1/chat-messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      //   'Authorization': `Bearer app-8fXyKoEq2Ka1XI3ZSs1FftaG`
-      },
-      body: JSON.stringify({
-        // inputs:
-        //     {
-        //       'code': codetext,
-        //     },
+      setIsSending(true);
+      console.log('发送请求参数:', {
+        inputs: { code: codetext },
         query: messageObject.content,
-        // response_mode: "streaming",
-        user_id: await getStorageSync('key'),
-        solution_id: 158709
-      }),
-      signal,
-      onMessage: (data) => {
-        console.log("data : ", data);
-        try {
-          //{"event": "message", "conversation_id": "71468e0b-b489-4e25-965e-bd86467bff04", "message_id": "d8792cc9-5b8b-4532-80b5-dedfc1200f00", "created_at": 1734343651, "task_id": "9040f0d7-f504-4b44-858f-5c904b882c1e", "id": "d8792cc9-5b8b-4532-80b5-dedfc1200f00", "answer": "include", "from_variable_selector": null}
-          const parsedData = JSON.parse(data);
-          console.log(parsedData)
-          const content = parsedData.answer || "";
-          modelResponseContent += content;
-
-          if (isRetry && isFirstUpdate) {
-            onModelMessage({ role: 'system', content: '', loading: false, id: modelBubbleId });
-            isFirstUpdate = false;
-          } else if (!modelBubbleId) {
-            onModelMessage({ role: 'system', content: '', loading: false, id: loadingBubbleId });
-            modelBubbleId = loadingBubbleId;
-          }
-
-          onModelMessage({
-            role: 'model',
-            content: marked.parse(modelResponseContent.trim()),
-            timestamp: timestamp,
-            loading: true,
-            id: modelBubbleId,
-          });
-          // }
-        } catch (err) {
-          console.error("解析数据时出错：", err);
-        }
-      },
-      onError: () => {
-        console.error("Error event received:", data);
-      },
-      onMessageEnd: () => {
-        console.log("Message end event received:", data);
-      },
-    });
-
-    if (modelBubbleId) {
-      const finalContent = marked.parse(modelResponseContent.trim());
-      const contentWithButton = `${finalContent.trim()}${generateButtonHTML(modelBubbleId).trim()}`;
-      onModelMessage({
-        role: 'model',
-        content: contentWithButton,
-        timestamp: timestamp,
-        loading: false,
-        id: modelBubbleId,
+        response_mode: 'streaming',
+        id: await getStorageSync('id')
       });
-      saveHistory('model', modelResponseContent);
-      bindButtonEvents(modelBubbleId, modelResponseContent, onModelMessage, setIsSending, messageObject);
 
-      if (!isRetry) {
-        globalState.retryBubbleId = modelBubbleId;
+      const parent_messageId = localStorage.getItem('message_id');
+      console.log("parent_message_id: ", parent_messageId);
+
+      const conversationId = localStorage.getItem('conversation_id');
+      console.log("conversation_id: ", conversationId);
+
+
+      await fetchSSE('http://172.22.98.237:8888/v1/chat-messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        //   'Authorization': `Bearer app-8fXyKoEq2Ka1XI3ZSs1FftaG`
+        },
+        body: JSON.stringify({
+          query: messageObject.content,
+          user_id: await getStorageSync('key'),
+          solution_id:160877,
+          conversation_id: conversationId,
+          parent_message_id: parent_messageId
+        }),
+        signal,
+        onMessage: (data) => {
+          console.log("data : ", data);
+          try {
+            //{"event": "message", "conversation_id": "71468e0b-b489-4e25-965e-bd86467bff04", "message_id": "d8792cc9-5b8b-4532-80b5-dedfc1200f00", "created_at": 1734343651, "task_id": "9040f0d7-f504-4b44-858f-5c904b882c1e", "id": "d8792cc9-5b8b-4532-80b5-dedfc1200f00", "answer": "include", "from_variable_selector": null}
+            const parsedData = JSON.parse(data);
+            // console.log(parsedData)
+            const content = parsedData.answer || "";
+            modelResponseContent += content;
+
+            // 保存 messageId
+            const messageId = parsedData.message_id;
+            if (messageId) {
+              localStorage.setItem('message_id', messageId); 
+            }
+
+            const conversationId = parsedData.conversation_id;
+            if (conversationId) {
+              localStorage.setItem('conversation_id', conversationId); 
+            }
+
+            if (isRetry && isFirstUpdate) {
+              onModelMessage({ role: 'system', content: '', loading: false, id: modelBubbleId });
+              isFirstUpdate = false;
+            } else if (!modelBubbleId) {
+              onModelMessage({ role: 'system', content: '', loading: false, id: loadingBubbleId });
+              modelBubbleId = loadingBubbleId;
+            }
+
+            onModelMessage({
+              role: 'model',
+              content: marked.parse(modelResponseContent.trim()),
+              timestamp: timestamp,
+              loading: true,
+              id: modelBubbleId,
+            });
+            // }
+          } catch (err) {
+            console.error("解析数据时出错：", err);
+          }
+        },
+        onError: () => {
+          console.error("Error event received:");
+        },
+        onMessageEnd: () => {
+          console.log("Message end event received:");
+          controller.abort();  
+        },
+      });
+
+      if (modelBubbleId) {
+        const finalContent = marked.parse(modelResponseContent.trim());
+        const contentWithButton = `${finalContent.trim()}${generateButtonHTML(modelBubbleId).trim()}`;
+        onModelMessage({
+          role: 'model',
+          content: contentWithButton,
+          timestamp: timestamp,
+          loading: false,
+          id: modelBubbleId,
+        });
+        saveHistory('model', modelResponseContent);
+        // bindButtonEvents(modelBubbleId, modelResponseContent, onModelMessage, setIsSending, messageObject);
+        bindButtonEvents(modelBubbleId, modelResponseContent, onUserMessage, onModelMessage, setIsSending, messageObject);
+
+        if (!isRetry) {
+          globalState.retryBubbleId = modelBubbleId;
+        }
       }
-    }
-
   } catch (error) {
     if (error.name === 'AbortError') {
-      onModelMessage({ role: 'system', content: '请求已中断', timestamp: '' });
+      if (modelBubbleId) {
+        const finalContent = marked.parse(modelResponseContent.trim());
+        const contentWithButton = `${finalContent.trim()}${generateButtonHTML(modelBubbleId).trim()}`;
+        onModelMessage({
+          role: 'model',
+          content: contentWithButton,
+          timestamp: timestamp,
+          loading: false,
+          id: modelBubbleId,
+        });
+        saveHistory('model', modelResponseContent);
+        // bindButtonEvents(modelBubbleId, modelResponseContent, onModelMessage, setIsSending, messageObject);
+        bindButtonEvents(modelBubbleId, modelResponseContent, onUserMessage, onModelMessage, setIsSending, messageObject);
+
+        if (!isRetry) {
+          globalState.retryBubbleId = modelBubbleId;
+        }
+      }
     } else {
       onModelMessage({ role: 'error', content: '错误：无法连接到模型', timestamp });
     }
@@ -357,23 +382,23 @@ function bindButtonEvents(id, content, onUserMessage, onModelMessage, setIsSendi
       const button = container.querySelector(selector);
       if (button) {
         button.addEventListener('click', callback);
-        console.log(`绑定${description}事件: ${selector}`);
+        // console.log(`绑定${description}事件: ${selector}`);
       } else {
-        console.warn(`${description}未找到: ${selector}`);
+        // console.warn(`${description}未找到: ${selector}`);
       }
     };
 
     // 绑定复制按钮事件
     bindButton('.copy-button', () => {
-      console.log('复制按钮被点击');
+      // console.log('复制按钮被点击');
       fallbackCopyTextToClipboard(content);
     }, '复制按钮');
 
     // 绑定重试按钮事件
 
     bindButton('.retry-button', () => {
-      console.log('当前最新消息ID:', globalState.latestMessageId);
-      console.log('当前重试的消息ID:', messageObject?.id);
+      // console.log('当前最新消息ID:', globalState.latestMessageId);
+      // console.log('当前重试的消息ID:', messageObject?.id);
 
       if (!messageObject) {
         console.error('重试失败：messageObject 为空');
