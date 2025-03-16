@@ -1,3 +1,4 @@
+import { getController, setController } from '../services/modelService';  // 导入方法
 // 获取按钮和侧边栏元素
 const collapseSidebarBtn = document.getElementById('collapse-sidebar-btn');
 const expandSidebarBtn = document.getElementById('expand-sidebar-btn');
@@ -28,12 +29,22 @@ expandSidebarBtn.addEventListener('click', function () {
 document.getElementById('new-chat-btn').addEventListener('click', function () {
     // 清空对话框
     document.getElementById('chat-history').innerHTML = '';
+    // 清除本地存储中的对话相关信息
+    localStorage.removeItem('conversation_id');
+    localStorage.removeItem('message_id');
+    // 获取当前的 controller 并中止请求
+    const currentController = getController();
+    if (currentController) {
+        currentController.abort(); // 中断当前请求
+        console.log("Current conversation aborted.");
+    }
 
-    // 发送请求通知后端创建新会话（如果需要）
-    // fetch('http://你的后端地址/api/new-chat', { method: 'POST' })
-    //     .then(response => response.json())
-    //     .then(data => console.log('新对话创建成功:', data))
-    //     .catch(error => console.error('新对话创建失败:', error));
+    // 创建新的 AbortController
+    const newController = new AbortController();
+    setController(newController); // 更新 controller
+
+    console.log("New conversation started. conversation_id and parent_message_id cleared.");
+  
 });
 
 

@@ -65,7 +65,18 @@ marked.use({
 });
 
 const apiKey = process.env.API_KEY;
+// 在全局范围定义 controller
 let controller;
+
+// 导出一个方法用于获取 controller
+export function setController(newController) {
+    controller = newController;
+}
+
+export function getController() {
+    return controller;
+}
+
 
 // 全局变量，用于管理正常回复和重新回复的气泡 ID
 const globalState = {
@@ -243,11 +254,15 @@ if (currentModel === 'deepSeek') {
     // 默认模型
     try {
       setIsSending(true);
+      const id = await getStorageSync('id');
+      const idAsInt = Number(id);  // 使用 Number 构造函数将 id 转为整数
+      console.log(idAsInt);  // 输出转换后的整数
+
       console.log('发送请求参数:', {
         inputs: { code: codetext },
         query: messageObject.content,
         response_mode: 'streaming',
-        id: await getStorageSync('id')
+        id: idAsInt
       });
 
       const parent_messageId = localStorage.getItem('message_id');
@@ -266,13 +281,13 @@ if (currentModel === 'deepSeek') {
         body: JSON.stringify({
           query: messageObject.content,
           user_id: await getStorageSync('key'),
-          solution_id:160877,
+          solution_id:idAsInt,
           conversation_id: conversationId,
           parent_message_id: parent_messageId
         }),
         signal,
         onMessage: (data) => {
-          console.log("data : ", data);
+          // console.log("data : ", data);
           try {
             //{"event": "message", "conversation_id": "71468e0b-b489-4e25-965e-bd86467bff04", "message_id": "d8792cc9-5b8b-4532-80b5-dedfc1200f00", "created_at": 1734343651, "task_id": "9040f0d7-f504-4b44-858f-5c904b882c1e", "id": "d8792cc9-5b8b-4532-80b5-dedfc1200f00", "answer": "include", "from_variable_selector": null}
             const parsedData = JSON.parse(data);
